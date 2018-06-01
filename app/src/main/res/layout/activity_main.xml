@@ -1,19 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/screen_padding"
     tools:context="nguyenhuu.hoang.powerstationidentifier.MainActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:text="Tên đường dây"/>
+    
+    <android.support.v7.widget.AppCompatAutoCompleteTextView
+        android:id="@+id/atv_lineName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vị trí"/>
+
+    <android.support.v7.widget.AppCompatAutoCompleteTextView
+        android:id="@+id/atv_position"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Khoảng cách từ đầu "/>
+
+        <EditText
+            android:inputType="number"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:inputType="number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="hoặc cuối "/>
+
+        <EditText
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <com.evrencoskun.tableview.TableView
+        android:id="@+id/table"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+</LinearLayout>
