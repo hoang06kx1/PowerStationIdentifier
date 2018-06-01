@@ -11,12 +11,13 @@ import android.view.LayoutInflater
 import java.text.Normalizer
 import java.util.regex.Pattern
 import android.util.DisplayMetrics
+import java.io.Serializable
 
 
 /**
  * Created by Hoang on 6/1/2018.
  */
-data class Station(var LineName: String, var Position: String, var Ward: String, var District: String, var Province: String, var Latitude: String, var Longtitude: String, var PowerLevel: String, var Zone: String, var Team: String, var Height: Float, var ColumnType: String, var Box: String, var Note: String)
+data class Station(var LineName: String, var Position: String, var Ward: String, var District: String, var Province: String, var Latitude: String, var Longtitude: String, var PowerLevel: String, var Zone: String, var Team: String, var Height: Float, var ColumnType: String, var Box: String, var Note: String): Serializable
 
 data class Distance(var LineName: String, var Position: String, var LineNameNoAccent: String, var PositionNoAccent: String, var Distance: Int, var Incremental: Int, var ReversedIncremental: Int)
 
@@ -28,14 +29,14 @@ class TableViewAdapter(val context: Context) : AbstractTableAdapter<String, Stri
         return ColumnHeaderViewHolder(layout)
     }
 
-    override fun onBindColumnHeaderViewHolder(holder: AbstractViewHolder?, columnHeaderItemModel: Any?, columnPosition: Int) {
-        val holder = holder as ColumnHeaderViewHolder
+    override fun onBindColumnHeaderViewHolder(vHolder: AbstractViewHolder?, columnHeaderItemModel: Any?, columnPosition: Int) {
+        val holder = vHolder as ColumnHeaderViewHolder
         holder.cellTextview.text = mColumnHeaderItems[columnPosition]
 //        holder.cellTextview.requestLayout()
     }
 
-    override fun onBindRowHeaderViewHolder(holder: AbstractViewHolder?, rowHeaderItemModel: Any?, rowPosition: Int) {
-        val holder = holder as RowHeaderViewHolder
+    override fun onBindRowHeaderViewHolder(vHolder: AbstractViewHolder?, rowHeaderItemModel: Any?, rowPosition: Int) {
+        val holder = vHolder as RowHeaderViewHolder
         holder.cellTextview.text = mRowHeaderItems[rowPosition]
     }
 
@@ -60,8 +61,8 @@ class TableViewAdapter(val context: Context) : AbstractTableAdapter<String, Stri
         return LayoutInflater.from(context).inflate(R.layout.table_view_corner_layout, null)
     }
 
-    override fun onBindCellViewHolder(holder: AbstractViewHolder?, cellItemModel: Any?, columnPosition: Int, rowPosition: Int) {
-        val holder = holder as CellViewHolder
+    override fun onBindCellViewHolder(vHolder: AbstractViewHolder?, cellItemModel: Any?, columnPosition: Int, rowPosition: Int) {
+        val holder = vHolder as CellViewHolder
         holder.cellTextview.text = (cellItemModel as String?) ?: ""
 //        holder.cellTextview.requestLayout()
     }

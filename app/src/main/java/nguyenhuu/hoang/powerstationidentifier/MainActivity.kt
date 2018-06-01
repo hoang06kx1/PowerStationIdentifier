@@ -1,6 +1,8 @@
 package nguyenhuu.hoang.powerstationidentifier
 
 import android.os.Bundle
+import android.support.v7.widget.RecyclerView
+import com.evrencoskun.tableview.listener.ITableViewListener
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.jakewharton.rxbinding2.widget.textChanges
@@ -14,18 +16,19 @@ class MainActivity : BaseActivity() {
 
     val adapter = TableViewAdapter(this)
     val columnHeaderList = arrayListOf("Đường dây", "Vị trí", "Khoảng cột", "Cộng dồn", "Cộng dồn ngược")
+    var distances: ArrayList<Distance> = ArrayList()
+    var stations: ArrayList<Station> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         // read json
         val inputStreamStations = assets.open("stations.json")
         val stationsJson = inputStreamStations.bufferedReader().use { it.readText() }
         val inputStreamDistances = assets.open("distances.json")
         val distancesJson = inputStreamDistances.bufferedReader().use { it.readText() }
-        val stations: ArrayList<Station> = Gson().fromJson(stationsJson, object : TypeToken<ArrayList<Station>>() {}.type)
-        val distances: ArrayList<Distance> = Gson().fromJson(distancesJson, object : TypeToken<ArrayList<Distance>>() {}.type)
+        stations = Gson().fromJson(stationsJson, object : TypeToken<ArrayList<Station>>() {}.type)
+        distances = Gson().fromJson(distancesJson, object : TypeToken<ArrayList<Distance>>() {}.type)
 
         // remove accent
         distances.forEachIndexed { i, it ->
@@ -54,11 +57,12 @@ class MainActivity : BaseActivity() {
         table.adapter = adapter
         adapter.setAllItems(columnHeaderList, rowHeaderList, cellList)
         table.setHasFixedWidth(false)
-        table.setColumnWidth(0, Utils.dpToPx(this, 300))
+        table.setColumnWidth(0, Utils.dpToPx(this, 280))
         table.setColumnWidth(1, Utils.dpToPx(this, 150))
         table.setColumnWidth(2, Utils.dpToPx(this, 100))
         table.setColumnWidth(3, Utils.dpToPx(this, 100))
         table.setColumnWidth(4, Utils.dpToPx(this, 100))
+        table.tableViewListener = TableViewClickListener()
 
         // filter
         edt_linename.textChanges().skipInitialValue().subscribe { s ->
@@ -116,5 +120,35 @@ class MainActivity : BaseActivity() {
             }
         }
         return result
+    }
+
+    inner class TableViewClickListener : ITableViewListener {
+        override fun onCellLongPressed(cellView: RecyclerView.ViewHolder, column: Int, row: Int) {
+        }
+
+        override fun onColumnHeaderLongPressed(columnHeaderView: RecyclerView.ViewHolder, column: Int) {
+        }
+
+        override fun onRowHeaderClicked(rowHeaderView: RecyclerView.ViewHolder, row: Int) {
+        }
+
+        override fun onColumnHeaderClicked(columnHeaderView: RecyclerView.ViewHolder, column: Int) {
+        }
+
+        override fun onCellClicked(cellView: RecyclerView.ViewHolder, column: Int, rowIndex: Int) {
+            val row = adapter.getCellRowItems(rowIndex) as List<String>
+            val station = stations.filter { it.LineName.trim().toLowerCase() == row[0].trim().toLowerCase() && it.Position.trim().toLowerCase() == row[1].trim().toLowerCase() }.firstOrNull()
+            if (station != null) {
+                val f = StationInfoFragment()
+                val bundle = Bundle()
+                bundle.putSerializable("STATION", station)
+                f.arguments = bundle
+                supportFragmentManager.beginTransaction().add(R.id.root_layout, f).addToBackStack(null).commit()
+            }
+        }
+
+        override fun onRowHeaderLongPressed(rowHeaderView: RecyclerView.ViewHolder, row: Int) {
+        }
+
     }
 }

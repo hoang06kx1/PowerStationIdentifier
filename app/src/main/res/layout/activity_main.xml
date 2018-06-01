@@ -1,71 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
+    android:id="@+id/root_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/screen_padding"
-    tools:context="nguyenhuu.hoang.powerstationidentifier.MainActivity">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tên đường dây"/>
-    
-    <EditText
-        android:id="@+id/edt_linename"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Vị trí"/>
-
-    <EditText
-        android:id="@+id/edt_position"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Khoảng cách từ đầu "/>
-
-        <EditText
-            android:id="@+id/edt_incremental"
-            android:inputType="number"
-            android:textSize="14sp"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"/>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:inputType="number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="hoặc cuối "/>
-
-        <EditText
-            android:textSize="14sp"
-            android:id="@+id/edt_reversed_incremental"
-            android:inputType="number"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
-
-    <com.evrencoskun.tableview.TableView
-        android:id="@+id/table"
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
-</LinearLayout>
+        android:orientation="vertical"
+        android:padding="@dimen/screen_padding"
+        tools:context="nguyenhuu.hoang.powerstationidentifier.MainActivity">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên đường dây"/>
+
+        <EditText
+            android:id="@+id/edt_linename"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vị trí"/>
+
+        <EditText
+            android:id="@+id/edt_position"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Khoảng cách từ đầu "/>
+
+            <EditText
+                android:id="@+id/edt_incremental"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textSize="14sp"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="hoặc cuối "/>
+
+            <EditText
+                android:id="@+id/edt_reversed_incremental"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
+
+        <com.evrencoskun.tableview.TableView
+            android:layout_marginTop="@dimen/large_margin"
+            android:id="@+id/table"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </LinearLayout>
+</FrameLayout>
