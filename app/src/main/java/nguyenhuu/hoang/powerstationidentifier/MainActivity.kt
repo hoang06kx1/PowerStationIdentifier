@@ -30,38 +30,70 @@ class MainActivity : BaseActivity() {
             it.PositionNoAccent = Utils.removeAccent(it.Position)
             if (i == 0) {
                 it.Incremental = it.Distance
-            }
-            if (i > 0) {
+            } else {
                 it.Incremental = distances[i - 1].Incremental + it.Distance
+            }
+        }
+
+        // revertedIncremental
+        distances.reversed().forEachIndexed { i, it ->
+            if (i == 0) {
+                it.ReversedIncremental = 0
+            } else {
+                it.ReversedIncremental = distances[i-1].ReversedIncremental + it.Distance
             }
         }
 
         // display on tableview
         val columnHeaderList = arrayListOf<String>("Đường dây", "Vị trí", "Khoảng cột", "Cộng dồn", "Cộng dồn ngược")
         val rowHeaderList = IntArray(distances.size, { i -> i + 1 }).map { i -> i.toString() }
-        val cellList = initCellList(distances, "", "")
+        val cellList = initCellList(distances, "", "", -1, -1)
         val adapter = TableViewAdapter(this)
         table.adapter = adapter
         adapter.setAllItems(columnHeaderList, rowHeaderList, cellList)
 
         // filter
         edt_linename.textChanges().skipInitialValue().subscribe { s ->
-            val newCellList = initCellList(distances, s.toString(), edt_distance.text.toString())
+            val newCellList = initCellList(distances, s.toString(), edt_position.text.toString(), getIncremental(), getRevertedIncremental())
             val newRowHeaderList = IntArray(newCellList.size, { i -> i + 1 }).map { i -> i.toString() }
             adapter.setAllItems(columnHeaderList, newRowHeaderList, newCellList)
         }
 
         edt_position.textChanges().skipInitialValue().subscribe { s ->
-            val newCellList = initCellList(distances, edt_linename.text.toString(), s.toString())
+            val newCellList = initCellList(distances, edt_linename.text.toString(), s.toString(), getIncremental(), getRevertedIncremental())
             val newRowHeaderList = IntArray(newCellList.size, { i -> i + 1 }).map { i -> i.toString() }
             adapter.setAllItems(columnHeaderList, newRowHeaderList, newCellList)
         }
+
+        edt_incremental.textChanges().skipInitialValue().subscribe { s ->
+            if (s.toString().toLongOrNull() != null) {
+                val newCellList = initCellList(distances, edt_linename.text.toString(), edt_position.text.toString(), getIncremental(), getRevertedIncremental())
+                val newRowHeaderList = IntArray(newCellList.size, { i -> i + 1 }).map { i -> i.toString() }
+                adapter.setAllItems(columnHeaderList, newRowHeaderList, newCellList)
+            }
+        }
+
+        edt_reversed_incremental.textChanges().skipInitialValue().subscribe { s ->
+            if (s.toString().toLongOrNull() != null) {
+                val newCellList = initCellList(distances, edt_linename.text.toString(), edt_position.text.toString(), getIncremental(), getRevertedIncremental())
+                val newRowHeaderList = IntArray(newCellList.size, { i -> i + 1 }).map { i -> i.toString() }
+                adapter.setAllItems(columnHeaderList, newRowHeaderList, newCellList)
+            }
+        }
     }
 
-    fun initCellList(distances: ArrayList<Distance>, name: String, position: String): List<List<String>> {
-        val result = emptyArray<List<String>>().toMutableList()
-        val sName = Utils.removeAccent(name)
-        val sPosition = Utils.removeAccent(position)
+    fun getIncremental(): Long {
+        return edt_incremental.text.toString().toLongOrNull()?: -1
+    }
+
+    fun getRevertedIncremental(): Long {
+        return edt_reversed_incremental.text.toString().toLongOrNull()?: -1
+    }
+
+    fun initCellList(distances: ArrayList<Distance>, name: String, position: String, incremental: Long, revertIncremental: Long): List<List<String>> {
+        var result = emptyArray<List<String>>().toMutableList()
+        val sName = Utils.removeAccent(name).trim()
+        val sPosition = Utils.removeAccent(position).trim()
         distances.forEach {
             var satisfiedDistance: Distance? = null
             if ((it.LineNameNoAccent.contains(sName, true) || sName.isBlank()) && (it.PositionNoAccent.contains(sPosition, true) || sPosition.isBlank())) {
@@ -69,6 +101,11 @@ class MainActivity : BaseActivity() {
             }
             if (satisfiedDistance != null) {
                 result.add(arrayOf<String>(satisfiedDistance.LineName, satisfiedDistance.Position, satisfiedDistance.Distance.toString(), satisfiedDistance.Incremental.toString(), satisfiedDistance.ReversedIncremental.toString()).toList())
+            }
+            if (incremental > -1) {
+                result = result.filter { it[3].toLongOrNull()?: -1 < incremental }.takeLast(1).toMutableList()
+            } else if (revertIncremental > -1) {
+
             }
         }
         return result

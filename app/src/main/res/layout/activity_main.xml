@@ -37,9 +37,10 @@
             android:text="Khoảng cách từ đầu "/>
 
         <EditText
-            android:id="@+id/edt_distance"
+            android:id="@+id/edt_incremental"
             android:inputType="number"
-            android:layout_width="70dp"
+            android:textSize="14sp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"/>
 
         <View
@@ -54,9 +55,10 @@
             android:text="hoặc cuối "/>
 
         <EditText
-            android:id="@+id/edt_reversed_distance"
+            android:textSize="14sp"
+            android:id="@+id/edt_reversed_incremental"
             android:inputType="number"
-            android:layout_width="70dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
