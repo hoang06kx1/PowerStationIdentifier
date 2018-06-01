@@ -10,6 +10,7 @@ import nguyenhuu.hoang.powerstationidentifier.R
 import android.view.LayoutInflater
 import java.text.Normalizer
 import java.util.regex.Pattern
+import android.util.DisplayMetrics
 
 
 /**
@@ -94,6 +95,16 @@ class Utils {
             val temp = Normalizer.normalize(s, Normalizer.Form.NFD)
             val pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+")
             return pattern.matcher(temp).replaceAll("").replace('đ', 'd').replace('Đ', 'D')
+        }
+
+        fun dpToPx(context: Context, dp: Int): Int {
+            val displayMetrics = context.getResources().getDisplayMetrics()
+            return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
+        }
+
+        fun pxToDp(context: Context, px: Int): Int {
+            val displayMetrics = context.getResources().getDisplayMetrics()
+            return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
         }
     }
 }

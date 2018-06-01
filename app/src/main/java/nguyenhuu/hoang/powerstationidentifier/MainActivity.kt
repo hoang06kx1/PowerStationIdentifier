@@ -12,6 +12,9 @@ import nguyenhuu.hoang.powerstationidentifier.models.Utils
 
 class MainActivity : BaseActivity() {
 
+    val adapter = TableViewAdapter(this)
+    val columnHeaderList = arrayListOf("Đường dây", "Vị trí", "Khoảng cột", "Cộng dồn", "Cộng dồn ngược")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -45,41 +48,44 @@ class MainActivity : BaseActivity() {
         }
 
         // display on tableview
-        val columnHeaderList = arrayListOf<String>("Đường dây", "Vị trí", "Khoảng cột", "Cộng dồn", "Cộng dồn ngược")
         val rowHeaderList = IntArray(distances.size, { i -> i + 1 }).map { i -> i.toString() }
         val cellList = initCellList(distances, "", "", -1, -1)
-        val adapter = TableViewAdapter(this)
         table.adapter = adapter
         adapter.setAllItems(columnHeaderList, rowHeaderList, cellList)
+        table.setHasFixedWidth(false)
+        table.setColumnWidth(0, Utils.dpToPx(this, 300))
+        table.setColumnWidth(1, Utils.dpToPx(this, 150))
+        table.setColumnWidth(2, Utils.dpToPx(this, 100))
+        table.setColumnWidth(3, Utils.dpToPx(this, 100))
+        table.setColumnWidth(4, Utils.dpToPx(this, 100))
 
         // filter
         edt_linename.textChanges().skipInitialValue().subscribe { s ->
-            val newCellList = initCellList(distances, s.toString(), edt_position.text.toString(), getIncremental(), getRevertedIncremental())
-            val newRowHeaderList = IntArray(newCellList.size, { i -> i + 1 }).map { i -> i.toString() }
-            adapter.setAllItems(columnHeaderList, newRowHeaderList, newCellList)
+            applyFilter(distances, s.toString(), edt_position.text.toString(), getIncremental(), getRevertedIncremental())
         }
 
         edt_position.textChanges().skipInitialValue().subscribe { s ->
-            val newCellList = initCellList(distances, edt_linename.text.toString(), s.toString(), getIncremental(), getRevertedIncremental())
-            val newRowHeaderList = IntArray(newCellList.size, { i -> i + 1 }).map { i -> i.toString() }
-            adapter.setAllItems(columnHeaderList, newRowHeaderList, newCellList)
+            applyFilter(distances, edt_linename.text.toString(), s.toString(), getIncremental(), getRevertedIncremental())
         }
 
         edt_incremental.textChanges().skipInitialValue().subscribe { s ->
             if (s.toString().toLongOrNull() != null) {
-                val newCellList = initCellList(distances, edt_linename.text.toString(), edt_position.text.toString(), getIncremental(), getRevertedIncremental())
-                val newRowHeaderList = IntArray(newCellList.size, { i -> i + 1 }).map { i -> i.toString() }
-                adapter.setAllItems(columnHeaderList, newRowHeaderList, newCellList)
+                applyFilter(distances, edt_linename.text.toString(), edt_position.text.toString(), getIncremental(), getRevertedIncremental())
+
             }
         }
 
         edt_reversed_incremental.textChanges().skipInitialValue().subscribe { s ->
             if (s.toString().toLongOrNull() != null) {
-                val newCellList = initCellList(distances, edt_linename.text.toString(), edt_position.text.toString(), getIncremental(), getRevertedIncremental())
-                val newRowHeaderList = IntArray(newCellList.size, { i -> i + 1 }).map { i -> i.toString() }
-                adapter.setAllItems(columnHeaderList, newRowHeaderList, newCellList)
+                applyFilter(distances, edt_linename.text.toString(), edt_position.text.toString(), getIncremental(), getRevertedIncremental())
             }
         }
+    }
+
+    fun applyFilter(distances: ArrayList<Distance>, name: String, position: String, incremental: Long, revertIncremental: Long) {
+        val newCellList = initCellList(distances, name, position, incremental, revertIncremental)
+        val newRowHeaderList = IntArray(newCellList.size, { i -> i + 1 }).map { i -> i.toString() }
+        adapter.setAllItems(columnHeaderList, newRowHeaderList, newCellList)
     }
 
     fun getIncremental(): Long {
