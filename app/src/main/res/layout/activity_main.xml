@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         android:text="Tên đường dây"/>
     
-    <android.support.v7.widget.AppCompatAutoCompleteTextView
-        android:id="@+id/atv_lineName"
+    <EditText
+        android:id="@+id/edt_linename"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -23,8 +23,8 @@
         android:layout_height="wrap_content"
         android:text="Vị trí"/>
 
-    <android.support.v7.widget.AppCompatAutoCompleteTextView
-        android:id="@+id/atv_position"
+    <EditText
+        android:id="@+id/edt_position"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -37,6 +37,7 @@
             android:text="Khoảng cách từ đầu "/>
 
         <EditText
+            android:id="@+id/edt_distance"
             android:inputType="number"
             android:layout_width="70dp"
             android:layout_height="wrap_content"/>
@@ -53,6 +54,8 @@
             android:text="hoặc cuối "/>
 
         <EditText
+            android:id="@+id/edt_reversed_distance"
+            android:inputType="number"
             android:layout_width="70dp"
             android:layout_height="wrap_content"/>
 
