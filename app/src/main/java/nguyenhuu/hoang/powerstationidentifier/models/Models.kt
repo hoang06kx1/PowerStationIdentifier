@@ -3,5 +3,5 @@ package nguyenhuu.hoang.powerstationidentifier.models
 /**
  * Created by Hoang on 6/1/2018.
  */
-data class Station(var lineName: String, var position: String, var ward: String, var district: String, var province: String, var latitude: String, var longtitude: String, var powerLevel: String, var zone: String, var team: String, var height: Float, var columnType: String, var box: String, var note: String)
-data class Distance(var lineName: String, var position: String, var distance: Int, var incremental: Int, var reversedIncremental: Int)
+data class Station(var LineName: String, var Position: String, var Ward: String, var District: String, var Province: String, var Latitude: String, var Longtitude: String, var PowerLevel: String, var Zone: String, var Team: String, var Height: Float, var ColumnType: String, var Box: String, var Note: String)
+data class Distance(var LineName: String, var Position: String, var Distance: Int, var Incremental: Int, var ReversedIncremental: Int)

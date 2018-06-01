@@ -1,7 +1,7 @@
 package nguyenhuu.hoang.powerstationidentifier
 
 import android.support.v7.app.AppCompatActivity
-import cn.pedant.SweetAlert.SweetAlertDialog
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog
 
 /**
  * Created by Hoang on 6/1/2018.
