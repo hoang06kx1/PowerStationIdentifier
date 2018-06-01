@@ -7,6 +7,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import nguyenhuu.hoang.powerstationidentifier.models.Distance
 import nguyenhuu.hoang.powerstationidentifier.models.Station
 import nguyenhuu.hoang.powerstationidentifier.models.TableViewAdapter
+import nguyenhuu.hoang.powerstationidentifier.models.Utils
 
 class MainActivity : BaseActivity() {
 
@@ -21,6 +22,18 @@ class MainActivity : BaseActivity() {
         val distancesJson = inputStreamDistances.bufferedReader().use { it.readText() }
         val stations: ArrayList<Station> = Gson().fromJson(stationsJson, object : TypeToken<ArrayList<Station>>() {}.type)
         val distances: ArrayList<Distance> = Gson().fromJson(distancesJson, object : TypeToken<ArrayList<Distance>>() {}.type)
+
+        // remove accent
+        distances.forEachIndexed { i, it ->
+            it.LineNameNoAccent = Utils.removeAccent(it.LineName)
+            it.PositionNoAccent = Utils.removeAccent(it.Position)
+            if (i == 0) {
+                it.Incremental = it.Distance
+            }
+            if (i > 0) {
+                it.Incremental = distances[i - 1].Incremental + it.Distance
+            }
+        }
 
         // display on tableview
         val columnHeaderList = arrayListOf<String>("Đường dây", "Vị trí", "Khoảng cột", "Cộng dồn", "Cộng dồn ngược")
