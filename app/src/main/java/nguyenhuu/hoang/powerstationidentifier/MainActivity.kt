@@ -39,11 +39,12 @@ class MainActivity : BaseActivity() {
         }
 
         // revertedIncremental
-        distances.reversed().forEachIndexed { i, it ->
+        val reversedDistance = distances.reversed()
+        reversedDistance.forEachIndexed { i, it ->
             if (i == 0) {
                 it.ReversedIncremental = 0
             } else {
-                it.ReversedIncremental = distances[i-1].ReversedIncremental + it.Distance
+                it.ReversedIncremental = reversedDistance[i - 1].ReversedIncremental + it.Distance
             }
         }
 
@@ -69,14 +70,14 @@ class MainActivity : BaseActivity() {
         }
 
         edt_incremental.textChanges().skipInitialValue().subscribe { s ->
-            if (s.toString().toLongOrNull() != null) {
+            if (s.toString().toLongOrNull() != null || s.toString().isBlank()) {
                 applyFilter(distances, edt_linename.text.toString(), edt_position.text.toString(), getIncremental(), getRevertedIncremental())
 
             }
         }
 
         edt_reversed_incremental.textChanges().skipInitialValue().subscribe { s ->
-            if (s.toString().toLongOrNull() != null) {
+            if (s.toString().toLongOrNull() != null || s.toString().isBlank()) {
                 applyFilter(distances, edt_linename.text.toString(), edt_position.text.toString(), getIncremental(), getRevertedIncremental())
             }
         }
@@ -89,14 +90,14 @@ class MainActivity : BaseActivity() {
     }
 
     fun getIncremental(): Long {
-        return edt_incremental.text.toString().toLongOrNull()?: -1
+        return edt_incremental.text.toString().toLongOrNull() ?: -1
     }
 
     fun getRevertedIncremental(): Long {
-        return edt_reversed_incremental.text.toString().toLongOrNull()?: -1
+        return edt_reversed_incremental.text.toString().toLongOrNull() ?: -1
     }
 
-    fun initCellList(distances: ArrayList<Distance>, name: String, position: String, incremental: Long, revertIncremental: Long): List<List<String>> {
+    fun initCellList(distances: ArrayList<Distance>, name: String, position: String, incremental: Long, reversedIncremental: Long): List<List<String>> {
         var result = emptyArray<List<String>>().toMutableList()
         val sName = Utils.removeAccent(name).trim()
         val sPosition = Utils.removeAccent(position).trim()
@@ -109,9 +110,9 @@ class MainActivity : BaseActivity() {
                 result.add(arrayOf<String>(satisfiedDistance.LineName, satisfiedDistance.Position, satisfiedDistance.Distance.toString(), satisfiedDistance.Incremental.toString(), satisfiedDistance.ReversedIncremental.toString()).toList())
             }
             if (incremental > -1) {
-                result = result.filter { it[3].toLongOrNull()?: -1 < incremental }.takeLast(1).toMutableList()
-            } else if (revertIncremental > -1) {
-
+                result = result.filter { it[3].toLongOrNull() ?: -1 <= incremental }.takeLast(1).toMutableList()
+            } else if (reversedIncremental > -1) {
+                result = result.reversed().filter { it[4].toLongOrNull() ?: -1 <= reversedIncremental }.takeLast(1).toMutableList()
             }
         }
         return result
